@@ -20,10 +20,7 @@
     <OctoPackIncludeTypeScriptSourceFiles Condition="'$(OctoPackIncludeTypeScriptSourceFiles)'==''">false</OctoPackIncludeTypeScriptSourceFiles>
     <OctoPackNuSpecFileName Condition="'$(OctoPackNuSpecFileName)' == ''"></OctoPackNuSpecFileName>
     <OctoPackAppendToPackageId Condition="'$(OctoPackAppendToPackageId)' == ''"></OctoPackAppendToPackageId>
-        
-    <OctoPackAppendToVersion Condition="'$(OctoPackAppendToVersion)' == ''"></OctoPackAppendToVersion>    
-    <OctoPackAppendToVersion Condition="'$(OctoPackAppendToVersion)' != '' AND !($(OctoPackAppendToVersion->StartsWith('-')))">-$(OctoPackAppendToVersion)</OctoPackAppendToVersion>
-    
+    <OctoPackAppendToVersion Condition="'$(OctoPackAppendToVersion)' == ''"></OctoPackAppendToVersion>
     <OctoPackReleaseNotesFile Condition="'$(OctoPackReleaseNotesFile)' == ''"></OctoPackReleaseNotesFile>
     <OctoPackNuGetExePath Condition="'$(OctoPackNuGetExePath)' == ''"></OctoPackNuGetExePath>
     <OctoPackPublishPackageToFileShare Condition="'$(OctoPackPublishPackageToFileShare)' == ''"></OctoPackPublishPackageToFileShare>
@@ -57,9 +54,11 @@
     <PropertyGroup>
       <OctoPackNuGetProperties Condition="'$(OctoPackNuGetProperties)' == ''"></OctoPackNuGetProperties>
     </PropertyGroup>
-	<!--
-		Append project name so that you can nest packages in a structure such as [orgName]/[PackageName]/PackageName.Version.nupkg
-	-->
+    <PropertyGroup>
+      <!-- Make sure the append version has a leading dash for nuget-->
+      <OctoPackAppendToVersion Condition="$(OctoPackAppendToVersion.StartsWith('-')) == False">-$(OctoPackAppendToVersion)</OctoPackAppendToVersion>            
+    </PropertyGroup>
+    <!-- Append project name so that you can nest packages in a structure such as [orgName]/[PackageName]/PackageName.Version.nupkg -->
     <PropertyGroup>
       <OctoPackPublishPackageToHttp Condition="'$(OctoPackPublishPackageToHttp)' != '' AND '$(OctoPackAppendProjectToFeed)'">$(OctoPackPublishPackageToHttp)/$(MSBuildProjectName)</OctoPackPublishPackageToHttp>
     </PropertyGroup>
